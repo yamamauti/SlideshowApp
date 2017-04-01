@@ -17,20 +17,35 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var play: UIButton!
+    @IBAction func unwind(segue: UIStoryboardSegue){
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         play.setTitle("再生", for: UIControlState.normal)
-
     }
-
+    
+        //戻ってきたとき用
+    func timerctr(){
+    if self.timer != nil{
+            //タイマー始動
+            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+    }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        let nextViewController:NextViewController = segue.destination as! NextViewController
+        nextViewController.enlargedImage = slide
+    }
+    
+    
     //画像表示
     func showImage(){
         if slide == 1 {
@@ -93,12 +108,17 @@ class ViewController: UIViewController {
             self.timer = nil
             play.setTitle("再生", for: UIControlState.normal)
         }
-
-        
         
         }
         
-
+    //拡大ボタン
+    
+    @IBAction func enlarge(_ sender: Any) {
+        
+        self.timer.invalidate()
+        
+    }
+    
         
     }
 
