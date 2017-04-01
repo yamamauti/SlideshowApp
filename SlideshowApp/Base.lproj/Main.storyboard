@@ -95,7 +95,9 @@
                     </view>
                     <connections>
                         <outlet property="imageView" destination="d5q-ng-j05" id="yNB-NK-XjQ"/>
+                        <outlet property="nextButton" destination="PQN-Mv-Pvn" id="m4d-VM-scN"/>
                         <outlet property="play" destination="Iwo-KI-nMg" id="5iV-AH-201"/>
+                        <outlet property="previousButton" destination="MzV-rY-jQP" id="xwv-aS-Qd6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -17,6 +17,8 @@ class ViewController: UIViewController {
     
     
     
+    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var previousButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var play: UIButton!
     @IBAction func unwind(segue: UIStoryboardSegue){if slidestate == 1{
@@ -99,17 +101,23 @@ class ViewController: UIViewController {
             if slidestate == 0{
                 self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
                 play.setTitle("停止", for: UIControlState.normal)
+                nextButton.isEnabled = false
+                previousButton.isEnabled = false
             }
             //再生状態で押した処理
             if slidestate == 1{
                 self.timer.invalidate()
                 self.timer = nil
                 play.setTitle("再生", for: UIControlState.normal)
+                nextButton.isEnabled = true
+                previousButton.isEnabled = true
             }
             //一時停止状態で押した処理
             if slidestate == 2{
                 self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
                 play.setTitle("停止", for: UIControlState.normal)
+                nextButton.isEnabled = false
+                previousButton.isEnabled = false
             }
         slidestate += 1
         if slidestate == 3{
