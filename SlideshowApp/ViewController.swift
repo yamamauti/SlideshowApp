@@ -11,13 +11,17 @@ import UIKit
 class ViewController: UIViewController {
     
     var slide = 1
+    var slidestate = 0
     var timer: Timer!
     var timer_sec: Float = 0
     
     
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var play: UIButton!
-    @IBAction func unwind(segue: UIStoryboardSegue){
+    @IBAction func unwind(segue: UIStoryboardSegue){if slidestate == 1{
+        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        }
         
     }
     
@@ -25,14 +29,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         play.setTitle("再生", for: UIControlState.normal)
-    }
-    
-        //戻ってきたとき用
-    func timerctr(){
-    if self.timer != nil{
-            //タイマー始動
-            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-    }
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,6 +40,8 @@ class ViewController: UIViewController {
         let nextViewController:NextViewController = segue.destination as! NextViewController
         nextViewController.enlargedImage = slide
     }
+    
+
     
     
     //画像表示
@@ -74,48 +72,59 @@ class ViewController: UIViewController {
     
     //進むボタン
     @IBAction func next(_ sender: Any) {
-        
         if self.timer == nil{
-        slide += 1
-        if slide == 4{
-            slide = 1
-        }
-        showImage()
-
+            slide += 1
+            if slide == 4{
+                slide = 1
+            }
+            showImage()
         }
     }
+ 
     //戻るボタン
     @IBAction func previous(_ sender: Any) {
         if self.timer == nil{
-        slide -= 1
-        if slide == 0{
-            slide = 3
-        }
-        showImage()
+            slide -= 1
+            if slide == 0{
+                slide = 3
+            }
+            showImage()
         }
     }
     
     //再生／停止ボタン
     @IBAction func play(_ sender: Any) {
-        if self.timer == nil{
-            //タイマー始動
-            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-            //ボタンの表示変更
-            play.setTitle("停止", for: UIControlState.normal)
-        }
-        else{
-            self.timer.invalidate()
-            self.timer = nil
-            play.setTitle("再生", for: UIControlState.normal)
-        }
         
+            //初期状態で押した処理
+            if slidestate == 0{
+                self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+                play.setTitle("停止", for: UIControlState.normal)
+            }
+            //再生状態で押した処理
+            if slidestate == 1{
+                self.timer.invalidate()
+                self.timer = nil
+                play.setTitle("再生", for: UIControlState.normal)
+            }
+            //一時停止状態で押した処理
+            if slidestate == 2{
+                self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+                play.setTitle("停止", for: UIControlState.normal)
+            }
+        slidestate += 1
+        if slidestate == 3{
+            slidestate = 1
         }
+            
+        }
+    
         
     //拡大ボタン
     
     @IBAction func enlarge(_ sender: Any) {
-        
+        if self.timer != nil{
         self.timer.invalidate()
+        }
         
     }
     
